@@ -1,4 +1,6 @@
 ---
+import { resolveAsset } from "../lib/assets";
+import ClassicFonts from "../components/ClassicFonts.astro";
 import { loadData } from "../lib/parser";
 import { loadConfig } from "../lib/parser/configParser";
 import { resolveTheme } from "../themes/registry";
@@ -76,21 +78,21 @@ const jsonLd = {
 <!doctype html>
 <html lang={config.locale || "en"}>
   <head>
+    {resolvedTheme.themeName === "classic" && <ClassicFonts />}
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="author" content={data.profile.name} />
     <meta name="generator" content={Astro.generator} />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content="noindex, nofollow" />
     {skillKeywords && <meta name="keywords" content={skillKeywords} />}
 
     <!-- Canonical URL -->
     <link rel="canonical" href={canonicalURL} />
 
     <!-- Favicons -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="alternate icon" href="/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href={resolveAsset("/favicon.ico")} />
 
     <!-- Open Graph / LinkedIn / Facebook -->
     <meta property="og:type" content="profile" />
@@ -98,7 +100,7 @@ const jsonLd = {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:site_name" content={`${data.profile.name} — CV`} />
-    <meta property="og:locale" content={config.locale === "de" ? "de_DE" : "en_US"} />
+    <meta property="og:locale" content={config.locale === "ja" ? "ja_JP" : config.locale === "de" ? "de_DE" : "en_US"} />
     {firstName && <meta property="profile:first_name" content={firstName} />}
     {lastName && <meta property="profile:last_name" content={lastName} />}
     {avatarUrl && <meta property="og:image" content={avatarUrl} />}
@@ -189,8 +191,11 @@ const jsonLd = {
         document.body.appendChild(iframe);
 
         iframe.onload = () => {
-          setTimeout(() => {
+          setTimeout(async () => {
             try {
+              // Wait for web fonts before capturing the print layout.
+              await iframe.contentDocument?.fonts.ready;
+              if (!iframe.isConnected) return;
               iframe.contentWindow?.focus();
               iframe.contentWindow?.print();
             } catch (err) {

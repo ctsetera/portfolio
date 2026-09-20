@@ -1,9 +1,5 @@
 import ClassicWeb from "./classic/index.astro";
 import ClassicPdf from "./classic/pdf.astro";
-import SidebarWeb from "./sidebar/index.astro";
-import SidebarPdf from "./sidebar/pdf.astro";
-import TimelineWeb from "./timeline/index.astro";
-import TimelinePdf from "./timeline/pdf.astro";
 
 export interface ThemeDefinition {
   web: any;
@@ -14,14 +10,6 @@ export const themes = {
   classic: {
     web: ClassicWeb,
     pdf: ClassicPdf,
-  },
-  sidebar: {
-    web: SidebarWeb,
-    pdf: SidebarPdf,
-  },
-  timeline: {
-    web: TimelineWeb,
-    pdf: TimelinePdf,
   },
 } as const;
 

@@ -47,3 +47,5 @@ AGENTS.md
 cv.json
 cv.yaml
 cv.xml
+# Cloudflare local state
+.wrangler/

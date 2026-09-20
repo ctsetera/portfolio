@@ -1,4 +1,6 @@
 ---
+import DescriptionText from "../DescriptionText.astro";
+import { getActivitySections } from "../../lib/activitySections";
 import type { CVData } from "../../lib/cvSchema";
 import { getTranslations } from "../../lib/i18n";
 
@@ -9,14 +11,10 @@ interface Props {
 }
 
 const { data, locale = "en", format = "a4" } = Astro.props;
-const { profile, experience, education, skills, projects, certifications, languages } = data;
+const { profile, skills, projects, certifications } = data;
 const t = getTranslations(locale);
 
-function formatDate(dateStr?: string | null, isCurrent?: boolean) {
-  if (isCurrent) return t("present");
-  if (!dateStr) return "";
-  return dateStr;
-}
+const activitySections = getActivitySections(data, t("present"));
 
 const contactItems: string[] = [];
 if (profile.email) contactItems.push(profile.email);
@@ -49,27 +47,27 @@ const socialItems = (profile.socials || []).map((s) => {
     )}
 
     {profile.bio && (
-      <p class="ats-bio">{profile.bio}</p>
+      <p class="ats-bio"><DescriptionText text={profile.bio} /></p>
     )}
   </header>
 
-  <!-- Work Experience -->
-  {experience && experience.length > 0 && (
+  <!-- Activities -->
+  {activitySections.map((group) => group.entries.length > 0 && (
     <section class="ats-section">
-      <h2 class="ats-section-title">{t("experience")}</h2>
+      <h2 class="ats-section-title">{t(group.key)}</h2>
       <div class="ats-list">
-        {experience.map((item) => (
+        {group.entries.map((item) => (
           <article class="ats-item">
             <div class="ats-item-header">
-              <span class="ats-item-role"><strong>{item.role}</strong></span>
-              <span class="ats-item-date">{item.startDate} – {formatDate(item.endDate, item.current)}</span>
+              <span class="ats-item-role"><strong>{item.heading}</strong></span>
+              {item.period && <span class="ats-item-date">{item.period}</span>}
             </div>
-            <div class="ats-item-subheader">
-              <span class="ats-item-company">{item.company}</span>
+            {(item.subtitle || item.location) && <div class="ats-item-subheader">
+              <span class="ats-item-subtitle">{item.subtitle}</span>
               {item.location && <span class="ats-item-location"> | {item.location}</span>}
-            </div>
+            </div>}
 
-            {item.description && <p class="ats-item-desc">{item.description}</p>}
+            {item.description && <p class="ats-item-desc"><DescriptionText text={item.description} /></p>}
 
             {item.highlights && item.highlights.length > 0 && (
               <ul class="ats-highlights">
@@ -88,38 +86,7 @@ const socialItems = (profile.socials || []).map((s) => {
         ))}
       </div>
     </section>
-  )}
-
-  <!-- Education -->
-  {education && education.length > 0 && (
-    <section class="ats-section">
-      <h2 class="ats-section-title">{t("education")}</h2>
-      <div class="ats-list">
-        {education.map((item) => (
-          <article class="ats-item">
-            <div class="ats-item-header">
-              <span class="ats-item-role">
-                <strong>{item.degree}{item.fieldOfStudy ? ` in ${item.fieldOfStudy}` : ""}</strong>
-              </span>
-              <span class="ats-item-date">{item.startDate} – {item.endDate || t("present")}</span>
-            </div>
-            <div class="ats-item-subheader">
-              <span class="ats-item-company">{item.institution}</span>
-              {item.location && <span class="ats-item-location"> | {item.location}</span>}
-            </div>
-
-            {item.highlights && item.highlights.length > 0 && (
-              <ul class="ats-highlights">
-                {item.highlights.map((hl) => (
-                  <li>{hl}</li>
-                ))}
-              </ul>
-            )}
-          </article>
-        ))}
-      </div>
-    </section>
-  )}
+  ))}
 
   <!-- Skills (Comma-separated lines for optimal ATS extraction) -->
   {skills && skills.length > 0 && (
@@ -148,7 +115,7 @@ const socialItems = (profile.socials || []).map((s) => {
                 {project.url && <span class="ats-project-url"> ({project.url.replace(/^https?:\/\//, "")})</span>}
               </span>
             </div>
-            {project.description && <p class="ats-item-desc">{project.description}</p>}
+            {project.description && <p class="ats-item-desc"><DescriptionText text={project.description} /></p>}
             {project.highlights && project.highlights.length > 0 && (
               <ul class="ats-highlights">
                 {project.highlights.map((hl) => (
@@ -184,15 +151,7 @@ const socialItems = (profile.socials || []).map((s) => {
     </section>
   )}
 
-  <!-- Languages -->
-  {languages && languages.length > 0 && (
-    <section class="ats-section">
-      <h2 class="ats-section-title">{t("languages")}</h2>
-      <p class="ats-languages-line">
-        {languages.map((l) => `${l.language} (${l.fluency})`).join("  |  ")}
-      </p>
-    </section>
-  )}
+
 </div>
 
 <style define:vars={{ pageSize: format === "letter" ? "letter" : "a4" }}>
@@ -333,7 +292,7 @@ const socialItems = (profile.socials || []).map((s) => {
     color: #374151;
   }
 
-  .ats-item-company {
+  .ats-item-subtitle {
     font-style: italic;
   }
 
@@ -360,7 +319,7 @@ const socialItems = (profile.socials || []).map((s) => {
     margin: 0.15rem 0 0 0;
   }
 
-  /* Skills & Languages */
+  /* Skills */
   .ats-skills-container {
     display: flex;
     flex-direction: column;
@@ -375,9 +334,4 @@ const socialItems = (profile.socials || []).map((s) => {
     page-break-inside: avoid;
   }
 
-  .ats-languages-line {
-    font-size: 9.25pt;
-    margin: 0;
-    color: #1f2937;
-  }
 </style>

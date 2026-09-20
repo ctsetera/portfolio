@@ -1,14 +1,13 @@
-export type SupportedLocale = "en" | "de";
+export type SupportedLocale = "en" | "de" | "ja";
 
 export const translations = {
   en: {
     aboutMe: "About Me",
     experience: "Work Experience",
-    education: "Education",
+    personalExperience: "Personal Technical Experience",
     skills: "Skills",
     projects: "Projects",
     certifications: "Certifications",
-    languages: "Languages",
     contact: "Contact",
     present: "Present",
     downloadAtsPdf: "📄 ATS PDF",
@@ -17,15 +16,26 @@ export const translations = {
   de: {
     aboutMe: "Über mich",
     experience: "Berufserfahrung",
-    education: "Ausbildung",
+    personalExperience: "Persönliche technische Erfahrung",
     skills: "Fähigkeiten",
     projects: "Projekte",
     certifications: "Zertifikate",
-    languages: "Sprachen",
     contact: "Kontakt",
     present: "Heute",
     downloadAtsPdf: "📄 ATS PDF",
     downloadDesignPdf: "🎨 Design PDF",
+  },
+  ja: {
+    aboutMe: "自己紹介",
+    experience: "職務経歴",
+    personalExperience: "個人での技術経験",
+    skills: "スキル",
+    projects: "制作実績",
+    certifications: "資格",
+    contact: "連絡先",
+    present: "Present",
+    downloadAtsPdf: "📄 採用システム向けPDF",
+    downloadDesignPdf: "🎨 デザインPDF",
   },
 } as const;
 

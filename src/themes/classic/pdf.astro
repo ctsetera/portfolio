@@ -1,4 +1,6 @@
 ---
+import DescriptionText from "../../components/DescriptionText.astro";
+import { getActivitySections } from "../../lib/activitySections";
 import type { CVData } from "../../lib/cvSchema";
 import { getTranslations } from "../../lib/i18n";
 import { resolveAsset } from "../../lib/assets";
@@ -9,14 +11,10 @@ interface Props {
 }
 
 const { data, locale = "en" } = Astro.props;
-const { profile, experience, education, skills, projects, certifications, languages } = data;
+const { profile, skills, projects, certifications } = data;
 const t = getTranslations(locale);
 
-function formatDate(dateStr?: string | null, isCurrent?: boolean) {
-  if (isCurrent) return t("present");
-  if (!dateStr) return "";
-  return dateStr;
-}
+const activitySections = getActivitySections(data, t("present"));
 ---
 
 <div class="pdf-classic">
@@ -69,33 +67,31 @@ function formatDate(dateStr?: string | null, isCurrent?: boolean) {
 
     {profile.bio && (
       <div class="bio">
-        <p>{profile.bio}</p>
+        <p><DescriptionText text={profile.bio} /></p>
       </div>
     )}
   </header>
 
-  <!-- Experience -->
-  {experience && experience.length > 0 && (
+  <!-- Activities -->
+  {activitySections.map((group) => group.entries.length > 0 && (
     <section class="section">
-      <h2 class="section-title">{t("experience")}</h2>
-      <div class="timeline">
-        {experience.map((item) => (
+      <h2 class="section-title">{t(group.key)}</h2>
+      <div class="entry-list">
+        {group.entries.map((item) => (
           <article class="item">
             <div class="item-header">
               <div>
-                <h3 class="item-title">{item.role}</h3>
-                <div class="item-subtitle">
-                  <span class="company">{item.company}</span>
+                <h3 class="item-title">{item.heading}</h3>
+                {(item.subtitle || item.location) && <div class="item-subtitle">
+                  <span class="entry-subtitle">{item.subtitle}</span>
                   {item.location && <span class="dot">•</span>}
                   {item.location && <span class="location">{item.location}</span>}
-                </div>
+                </div>}
               </div>
-              <div class="date-badge">
-                {item.startDate} – {formatDate(item.endDate, item.current)}
-              </div>
+              {item.period && <div class="date-badge">{item.period}</div>}
             </div>
 
-            {item.description && <p class="item-desc">{item.description}</p>}
+            {item.description && <p class="item-desc"><DescriptionText text={item.description} /></p>}
 
             {item.highlights && item.highlights.length > 0 && (
               <ul class="highlights">
@@ -116,7 +112,7 @@ function formatDate(dateStr?: string | null, isCurrent?: boolean) {
         ))}
       </div>
     </section>
-  )}
+  ))}
 
   <!-- Projects -->
   {projects && projects.length > 0 && (
@@ -131,7 +127,7 @@ function formatDate(dateStr?: string | null, isCurrent?: boolean) {
                 {project.url && <span class="url-text">({project.url.replace(/^https?:\/\//, '')})</span>}
               </h3>
             </div>
-            {project.description && <p class="item-desc">{project.description}</p>}
+            {project.description && <p class="item-desc"><DescriptionText text={project.description} /></p>}
             {project.highlights && project.highlights.length > 0 && (
               <ul class="highlights">
                 {project.highlights.map((hl) => (
@@ -171,79 +167,28 @@ function formatDate(dateStr?: string | null, isCurrent?: boolean) {
     </section>
   )}
 
-  <!-- Education -->
-  {education && education.length > 0 && (
-    <section class="section">
-      <h2 class="section-title">{t("education")}</h2>
-      <div class="timeline">
-        {education.map((item) => (
-          <article class="item">
-            <div class="item-header">
-              <div>
-                <h3 class="item-title">{item.degree} {item.fieldOfStudy ? `in ${item.fieldOfStudy}` : ''}</h3>
-                <div class="item-subtitle">
-                  <span class="institution">{item.institution}</span>
-                  {item.location && <span class="dot">•</span>}
-                  {item.location && <span class="location">{item.location}</span>}
-                </div>
-              </div>
-              <div class="date-badge">
-                {item.startDate} – {item.endDate || t("present")}
-              </div>
+  <!-- Certifications -->
+  {certifications && certifications.length > 0 && (
+    <section class="section certifications-section">
+      <h2 class="section-title">{t("certifications")}</h2>
+      <ul class="cert-list">
+        {certifications.map((cert) => (
+          <li class="cert-item">
+            <div class="cert-header">
+              <strong>{cert.title}</strong>
+              <span class="cert-date">{cert.date}</span>
             </div>
-            {item.highlights && item.highlights.length > 0 && (
-              <ul class="highlights">
-                {item.highlights.map((hl) => (
-                  <li>{hl}</li>
-                ))}
-              </ul>
-            )}
-          </article>
+            <div class="cert-issuer">{cert.issuer}</div>
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
-  )}
-
-  <!-- Certifications & Languages -->
-  {((certifications && certifications.length > 0) || (languages && languages.length > 0)) && (
-    <div class="split-section">
-      {certifications && certifications.length > 0 && (
-        <section class="section half">
-          <h2 class="section-title">{t("certifications")}</h2>
-          <ul class="cert-list">
-            {certifications.map((cert) => (
-              <li class="cert-item">
-                <div class="cert-header">
-                  <strong>{cert.title}</strong>
-                  <span class="cert-date">{cert.date}</span>
-                </div>
-                <div class="cert-issuer">{cert.issuer}</div>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      {languages && languages.length > 0 && (
-        <section class="section half">
-          <h2 class="section-title">{t("languages")}</h2>
-          <ul class="lang-list">
-            {languages.map((lang) => (
-              <li class="lang-item">
-                <span class="lang-name">{lang.language}</span>
-                <span class="lang-fluency">{lang.fluency}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-    </div>
   )}
 </div>
 
 <style>
   .pdf-classic {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", Meiryo, system-ui, sans-serif;
     color: #0f172a;
     background-color: #ffffff;
     max-width: 210mm;
@@ -304,7 +249,7 @@ function formatDate(dateStr?: string | null, isCurrent?: boolean) {
   .title {
     font-size: 1.05rem;
     color: #2563eb;
-    font-weight: 600;
+    font-weight: 700;
     margin: 0 0 0.5rem 0;
   }
 
@@ -347,7 +292,7 @@ function formatDate(dateStr?: string | null, isCurrent?: boolean) {
     margin: 0 0 0.75rem 0;
   }
 
-  .timeline {
+  .entry-list {
     display: flex;
     flex-direction: column;
     gap: 1.1rem;
@@ -378,8 +323,8 @@ function formatDate(dateStr?: string | null, isCurrent?: boolean) {
     color: #475569;
   }
 
-  .company, .institution {
-    font-weight: 600;
+  .entry-subtitle {
+    font-weight: 700;
     color: #2563eb;
   }
 
@@ -389,7 +334,7 @@ function formatDate(dateStr?: string | null, isCurrent?: boolean) {
 
   .date-badge {
     font-size: 8.5pt;
-    font-weight: 600;
+    font-weight: 700;
     color: #64748b;
     white-space: nowrap;
   }
@@ -467,14 +412,12 @@ function formatDate(dateStr?: string | null, isCurrent?: boolean) {
     color: #0f172a;
   }
 
-  .split-section {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
+  .certifications-section {
+    width: 100%;
     break-inside: avoid;
   }
 
-  .cert-list, .lang-list {
+  .cert-list {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -498,11 +441,4 @@ function formatDate(dateStr?: string | null, isCurrent?: boolean) {
     color: #64748b;
   }
 
-  .lang-item {
-    display: flex;
-    justify-content: space-between;
-    font-size: 8.5pt;
-    padding-bottom: 0.2rem;
-    border-bottom: 1px dashed #e2e8f0;
-  }
 </style>

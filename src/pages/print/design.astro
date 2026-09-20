@@ -1,4 +1,5 @@
 ---
+import ClassicFonts from "../../components/ClassicFonts.astro";
 import { loadData } from "../../lib/parser";
 import { loadConfig } from "../../lib/parser/configParser";
 import { resolveTheme } from "../../themes/registry";
@@ -21,6 +22,7 @@ const pageTitle = config.pdf?.filename
 <!doctype html>
 <html lang={config.locale || "en"}>
   <head>
+    {resolvedTheme.themeName === "classic" && <ClassicFonts />}
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{pageTitle}</title>

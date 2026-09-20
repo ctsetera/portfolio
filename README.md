@@ -1,297 +1,117 @@
-# dotcv
+# エンジニアリング・ポートフォリオ
 
-> A modern, minimalist, and ATS-friendly CV and portfolio platform inspired by *readcv*, built with [Astro](https://astro.build).
+Astroのdotcvをベースに、classicレイアウト専用に整理した個人用ポートフォリオです。
+画面とデザインPDFではNoto Sans JPを使用します。
 
-[**Live Demo ↗**](https://tjaugust01.github.io/dotcv/) · [Features](#features) · [Themes](#available-themes) · [Quick Start](#quick-start) · [Documentation](#configuration-reference)
+## 文章を編集する場所
 
-Manage your resume data and preferences in simple root configuration files and get an elegant online presence alongside a machine-readable, printable PDF resume.
+プロジェクト直下の `cv.json` を編集します。
 
-[![dotcv Preview](docs/images/hero-preview.png)](https://tjaugust01.github.io/dotcv/)
+| 項目 | 内容 |
+| --- | --- |
+| `profile` | 名前、肩書き、自己紹介、任意の連絡先・画像・SNS |
+| `experience` | 職務経歴（会社・役割・期間・説明・成果・使用技術） |
+| `personalExperience` | 個人での技術経験（期間なし） |
+| `projects` | 制作実績 |
+| `skills` | 技術スキル |
+| `certifications` | 資格 |
 
----
+一覧項目は省略または `[]` にすると見出しごと非表示になります。
+`personalExperience` は職務経歴の直下に表示されます。
 
-## Features
-
-- **Root-Level Configuration:** Maintain your resume data (`cv.json`) and settings (`dotcv.config.json`) directly in the project root.
-- **Dual PDF Export:**
-  - **ATS Resume:** A standardized, single-column vector layout optimized for Applicant Tracking Systems (Workday, Greenhouse, etc.) with precise print pagination.
-  - **Design PDF:** A styled PDF matching the visual layout of your chosen web theme for personal presentations.
-- **Pluggable Theme System:** Switch between pre-built themes (`classic`, `sidebar`, `timeline`) or create custom layouts.
-- **Internationalization (i18n):** Built-in multi-language support (e.g., English, German).
-- **SEO & Social Sharing:**
-  - OpenGraph and Twitter Card metadata for rich previews on LinkedIn, X, and other platforms.
-  - Structured data with Schema.org (`Person`) JSON-LD.
-  - Dynamic keyword and canonical URL generation.
-- **Static & Fast:** 100% Static Site Generation (SSG) with zero runtime dependencies. Deployable on GitHub Pages, Cloudflare Pages, Vercel, Netlify, or any static web server.
-
----
-
-## Available Themes
-
-`dotcv` includes three themes out of the box. You can configure the active theme in `dotcv.config.json` or preview each theme live via the links below:
-
-### 1. Classic Theme (`classic`)
-An elegant, centered single-column layout with clean typography and subtle accents. Suitable for any industry.
-
-[**View Classic Demo ↗**](https://tjaugust01.github.io/dotcv/) *(Local: `http://localhost:4321/preview/classic`)*
-
-![Classic Theme Preview](docs/images/theme-classic.png)
-
----
-
-### 2. Sidebar Theme (`sidebar`)
-A modern two-column layout featuring a sticky profile sidebar on the left and chronological career milestones on the right.
-
-[**View Sidebar Demo ↗**](https://tjaugust01.github.io/dotcv/preview/sidebar) *(Local: `http://localhost:4321/preview/sidebar`)*
-
-![Sidebar Theme Preview](docs/images/theme-sidebar.png)
-
----
-
-### 3. Timeline Theme (`timeline`)
-A timeline layout designed for engineers and creatives, complete with a dark mode toggle, hero profile header, and tagged cards.
-
-[**View Timeline Demo ↗**](https://tjaugust01.github.io/dotcv/preview/timeline) *(Local: `http://localhost:4321/preview/timeline`)*
-
-![Timeline Theme Preview](docs/images/theme-timeline.png)
-
----
-
-## Dual PDF Export
-
-`dotcv` provides two distinct PDF formats:
-
-![ATS PDF vs. Design PDF Comparison](docs/images/pdf-comparison.png)
-
-1. **ATS Resume (`/print/ats`):** 
-   - Strict single-column layout, standard typography, and clean text flow.
-   - Ensures optimal parsing rates across automated HR and recruiting software.
-2. **Design PDF (`/print/design`):** 
-   - Visually styled to match your chosen web theme.
-   - Ideal for direct recruiter contact, interviews, or portfolio presentations.
-
----
-
-## Quick Start
-
-### 1. Clone the repository & install dependencies
-
-```bash
-git clone https://github.com/your-username/dotcv.git
-cd dotcv
-npm install
+```json
+"personalExperience": [
+  {
+    "title": "電子工作・組み込み開発",
+    "role": "企画・設計・実装",
+    "description": "取り組んだ内容の概要",
+    "highlights": ["工夫したことや得られた成果"],
+    "technologies": ["Arduino", "C++"]
+  }
+]
 ```
 
-### 2. Add your CV data
+個人での技術経験は `title` のみ必須です。既存の職務経歴の入力形式はそのまま使えます。
 
-Create your personal `cv.json` (or use `cv.example.json` as a starting point):
+## 表示の設定
 
-```bash
-cp cv.example.json cv.json
-```
+`dotcv.config.json` の `theme` は `classic` を指定します。
+`locale` は日本語なら `ja`、英語なら `en`、ドイツ語なら `de` です。
+見出しの文言は `src/lib/i18n/index.ts` の各言語の辞書で変更できます。
 
-### 3. Start the local development server
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:4321](http://localhost:4321) in your browser.
-
----
-
-## Configuration Reference
-
-### 1. `dotcv.config.json` (Settings)
-
-This file controls the theme, localization, and PDF export behaviors:
+PDFの任意設定：
 
 ```json
 {
   "theme": "classic",
-  "locale": "en",
+  "locale": "ja",
   "pdf": {
     "theme": "classic",
     "format": "a4",
     "showAtsButton": true,
     "showDesignButton": true,
-    "filename": "CV_{name}.pdf"
+    "filename": "{name} — CV"
   }
 }
 ```
 
-#### Available Options
+## 主なファイル
 
-| Option | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
-| **`theme`** | `string` | `"classic"` | Active web theme (`classic`, `sidebar`, `timeline`). |
-| **`locale`** | `string` | `"en"` | Language code for UI strings and date formatting (`en`, `de`). |
-| **`pdf.theme`** | `string` *(optional)* | `theme` | Theme override for the Design PDF export (e.g., use `classic` for PDF while keeping `timeline` on web). |
-| **`pdf.format`** | `"a4" \| "letter"` *(optional)* | `"a4"` | Page size for print and PDF generation (`"a4"` or `"letter"`). |
-| **`pdf.showAtsButton`** | `boolean` *(optional)* | `true` | Toggles the visibility of the ATS PDF download button on the website. |
-| **`pdf.showDesignButton`** | `boolean` *(optional)* | `true` | Toggles the visibility of the Design PDF download button on the website. |
-| **`pdf.filename`** | `string` *(optional)* | `"{name} — CV"` | Default filename suggested in browser save dialogs. Supports `{name}` and `{title}` placeholders. |
+- `src/themes/classic/index.astro`：Web画面
+- `src/themes/classic/pdf.astro`：デザインPDF
+- `src/components/pdf/AtsResume.astro`：採用システム向けPDF
+- `src/components/ClassicFonts.astro`：Google Fontsの読み込み
+- `src/lib/activitySections.ts`：職務経歴・個人活動の共通表示データ
+- `src/lib/cvSchema.ts`：入力データの定義
+- `public/`：プロフィール画像・アイコン
 
----
+## ローカルで確認
 
-### 2. `cv.json` (Resume Data)
+Node.jsは `package.json` の `engines` に対応するバージョンを使用します。
 
-The `cv.json` file contains all structured profile information:
-
-```json
-{
-  "profile": {
-    "name": "Jane Example",
-    "title": "Senior Software Engineer & Architect",
-    "email": "jane@example.com",
-    "phone": "+1 234 567 8900",
-    "location": "San Francisco, CA",
-    "website": "https://example.com",
-    "avatar": "/avatar.svg",
-    "bio": "Brief overview about your professional background and core strengths.",
-    "socials": [
-      {
-        "plattform": "GitHub",
-        "url": "https://github.com/example",
-        "username": "example"
-      }
-    ]
-  },
-  "experience": [
-    {
-      "company": "Tech Company",
-      "role": "Senior Engineer",
-      "location": "San Francisco, CA",
-      "startDate": "2022-01",
-      "endDate": null,
-      "current": true,
-      "description": "Core responsibilities and team leadership.",
-      "highlights": [
-        "Architected scalable frontend components using Astro and TypeScript",
-        "Improved website loading performance and Core Web Vitals by 40%"
-      ],
-      "technologies": ["TypeScript", "Astro", "React", "Node.js"]
-    }
-  ],
-  "education": [
-    {
-      "institution": "University of Technology",
-      "degree": "Master of Science",
-      "fieldOfStudy": "Computer Science",
-      "startDate": "2018-10",
-      "endDate": "2020-09",
-      "location": "San Francisco, CA",
-      "highlights": ["Focus on distributed systems and web performance"]
-    }
-  ],
-  "skills": [
-    {
-      "category": "Frontend",
-      "skills": ["Astro", "TypeScript", "React", "Tailwind CSS"]
-    }
-  ],
-  "projects": [
-    {
-      "title": "Open Source Project",
-      "description": "Project overview and key features.",
-      "url": "https://github.com/example/project",
-      "technologies": ["Astro", "TypeScript"]
-    }
-  ],
-  "certifications": [
-    {
-      "title": "Cloud Architect Certificate",
-      "issuer": "Cloud Provider",
-      "date": "2023-05",
-      "url": "https://example.com/cert"
-    }
-  ],
-  "languages": [
-    {
-      "language": "English",
-      "fluency": "Native"
-    },
-    {
-      "language": "German",
-      "fluency": "Professional working proficiency"
-    }
-  ]
-}
+```sh
+npm install
+npm run dev
 ```
 
----
+開発サーバーが表示するURLを開きます。現在のベースパスは `/` です。ローカルでは `http://localhost:4321/` を開きます。
+ベースパス配下の `/preview/classic` でプレビュー、`/print/design` でデザインPDF、
+`/print/ats` で採用システム向けPDFを確認できます。`/print` は採用システム向けPDFの互換ルートです。
 
-## Project Structure
-
-```
-dotcv/
-├── cv.json                   # Personal CV data (or cv.yaml / cv.xml)
-├── cv.example.json           # Template with placeholder data
-├── dotcv.config.json         # Settings (Theme, locale, PDF options)
-├── public/                   # Static assets (Avatar, Favicon, Fonts)
-├── src/
-│   ├── components/
-│   │   └── pdf/
-│   │       └── AtsResume.astro  # Standardized ATS-optimized PDF layout
-│   ├── lib/
-│   │   ├── configSchema.ts   # Zod validation schema for config
-│   │   ├── cvSchema.ts       # Zod validation schema for CV data
-│   │   ├── i18n/             # Translations (en, de, ...)
-│   │   └── parser/           # Format-agnostic loaders & parsers
-│   ├── pages/
-│   │   ├── index.astro       # Public CV website
-│   │   ├── preview/
-│   │   │   └── [theme].astro # Live preview routes for each theme (/preview/<theme>)
-│   │   ├── print/
-│   │   │   ├── ats.astro     # Route for ATS PDF (/print/ats)
-│   │   │   └── design.astro  # Route for Design PDF (/print/design)
-│   │   └── print.astro       # Default print fallback route
-│   └── themes/
-│       ├── classic/          # Classic Theme (index.astro & pdf.astro)
-│       ├── sidebar/          # Sidebar Theme (index.astro & pdf.astro)
-│       ├── timeline/         # Timeline Theme (index.astro & pdf.astro)
-│       └── registry.ts       # Theme registry
-├── astro.config.mjs
-└── package.json
+```sh
+npm run build
+npm run preview
 ```
 
----
+ビルド結果は `dist/` に生成されます。公開先は `https://portfolio.ctsetera.dev` に設定済みです。
+スクリーンショット生成は `npm run screenshots`、比較画像生成は `npm run generate:comparison` です。
+これらには起動中の開発サーバーとPuppeteerが動作する環境が必要です。
+`BASE_URL` にはベースパスを含むURL（例：`http://localhost:4321`）を指定してください。
 
-## Deployment
+## Cloudflare Workersへの公開
 
-Since `dotcv` generates static HTML, CSS, and JS, it can be hosted on any static hosting provider or web server:
+静的ファイルの配信設定は `wrangler.jsonc` にあります。公開するときに実行します。
 
-### 1. Configure site URL (`astro.config.mjs`)
-```js
-import { defineConfig } from 'astro/config';
-
-export default defineConfig({
-  site: 'https://your-domain.com',
-});
+```sh
+npx wrangler login
+npm run build
+npx wrangler deploy
 ```
 
-### 2. Choose your hosting provider
-- **Vercel / Netlify / Cloudflare Pages:**
-  - Build Command: `npm run build`
-  - Output Directory: `dist`
-- **GitHub Pages:**
-  - Deploy using the standard [Astro GitHub Pages Action](https://docs.astro.build/en/guides/deploy/github/).
-- **Self-hosted (Nginx / Caddy / Docker):**
-  - Serve the generated static files from the `dist/` directory.
+カスタムドメインは `portfolio.ctsetera.dev` です。ログイン先アカウントで `ctsetera.dev` を管理している必要があります。
+Git連携ビルドを利用する場合、現在Git管理対象外の `cv.json` をビルド環境に用意してください。
 
----
+## 検索エンジンへの掲載防止
 
-## Available Scripts
+全HTMLページに `noindex, nofollow` を指定しています。
+`public/_headers` ではCloudflare Workersの静的配信全体に
+`X-Robots-Tag: noindex, nofollow` を設定しています（画像なども対象）。
+Astroの開発サーバーではこのHTTPヘッダー設定は適用されません。
 
-| Command | Action |
-| :--- | :--- |
-| `npm run dev` | Starts the Astro development server with hot module reloading |
-| `npm run build` | Builds the production-ready static website to the `dist/` folder |
-| `npm run preview` | Starts a local preview server for the built `dist/` directory |
-| `npm run screenshots` | Automatically captures all theme previews and PDF comparison graphics in `docs/images/` |
+`robots.txt` の巡回禁止は追加していません。巡回を禁止すると、検索エンジンが
+ページの `noindex` を読み取れなくなるためです。
+本サイトは認証なしで閲覧できる構成です。検索エンジンへの掲載防止設定は維持しています。
 
----
+## ライセンス
 
-## License
-
-MIT License – Free for personal and commercial use.
+元テーマdotcvのMITライセンスは `LICENSE` を参照してください。

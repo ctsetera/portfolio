@@ -42,7 +42,7 @@ async function main() {
     // -------------------------------------------------------------
     // 1. Web Theme Screenshots (Desktop Viewport, 2x Retina)
     // -------------------------------------------------------------
-    const themes = ["classic", "sidebar", "timeline"];
+    const themes = ["classic"];
 
     for (const theme of themes) {
       console.log(`📸 Erstelle Theme-Screenshot: ${theme} (/preview/${theme})...`);
