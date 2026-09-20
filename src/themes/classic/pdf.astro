@@ -1,6 +1,5 @@
 ---
 import DescriptionText from "../../components/DescriptionText.astro";
-import { getActivitySections } from "../../lib/activitySections";
 import type { CVData } from "../../lib/cvSchema";
 import { getTranslations } from "../../lib/i18n";
 import { resolveAsset } from "../../lib/assets";
@@ -11,10 +10,9 @@ interface Props {
 }
 
 const { data, locale = "en" } = Astro.props;
-const { profile, skills, projects, certifications } = data;
+const { profile, experience, skills, projects, certifications } = data;
 const t = getTranslations(locale);
 
-const activitySections = getActivitySections(data, t("present"));
 ---
 
 <div class="pdf-classic">
@@ -73,22 +71,19 @@ const activitySections = getActivitySections(data, t("present"));
   </header>
 
   <!-- Activities -->
-  {activitySections.map((group) => group.entries.length > 0 && (
+  {experience.length > 0 && (
     <section class="section">
-      <h2 class="section-title">{t(group.key)}</h2>
+      <h2 class="section-title">{t("experience")}</h2>
       <div class="entry-list">
-        {group.entries.map((item) => (
+        {experience.map((item) => (
           <article class="item">
             <div class="item-header">
               <div>
-                <h3 class="item-title">{item.heading}</h3>
-                {(item.subtitle || item.location) && <div class="item-subtitle">
-                  <span class="entry-subtitle">{item.subtitle}</span>
-                  {item.location && <span class="dot">•</span>}
-                  {item.location && <span class="location">{item.location}</span>}
+                <h3 class="item-title">{item.title}</h3>
+                {item.role && <div class="item-subtitle">
+                  <span class="entry-subtitle">{item.role}</span>
                 </div>}
               </div>
-              {item.period && <div class="date-badge">{item.period}</div>}
             </div>
 
             {item.description && <p class="item-desc"><DescriptionText text={item.description} /></p>}
@@ -112,7 +107,7 @@ const activitySections = getActivitySections(data, t("present"));
         ))}
       </div>
     </section>
-  ))}
+  )}
 
   <!-- Projects -->
   {projects && projects.length > 0 && (
@@ -328,11 +323,7 @@ const activitySections = getActivitySections(data, t("present"));
     color: #2563eb;
   }
 
-  .dot {
-    margin: 0 0.3rem;
-  }
-
-  .date-badge {
+.date-badge {
     font-size: 8.5pt;
     font-weight: 700;
     color: #64748b;

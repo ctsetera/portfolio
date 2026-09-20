@@ -18,20 +18,8 @@ export const profileSchema = z.object ({
     socials: z.array(socialSchema).default([]),
 })
 
-export const experienceSchema = z.object({
-    title: z.string(),
-    role: z.string().optional(),
-    location: z.string().optional().optional(),
-    startDate: z.string(), // exp. '2020-01-01 or 'Jan 2022'
-    endDate: z.string().nullish(), // Present if not provided / null
-    current: z.boolean().default(false),
-    description: z.string().optional(), // Job description
-    highlights: z.array(z.string()).default([]), // exp. ['Built a custom CMS', 'Implemented responsive design']
-    technologies: z.array(z.string()).default([]), // exp. ['React', 'Node.js', 'MongoDB']
-})
-
 // Personal activities deliberately have no date fields.
-export const personalExperienceSchema = z.object({
+export const experienceSchema = z.object({
     title: z.string(),
     role: z.string().optional(),
     description: z.string().optional(),
@@ -62,7 +50,6 @@ export const certificationsSchema = z.object({
 export const cvSchema = z.object({
     profile: profileSchema,
     experience: z.array(experienceSchema).default([]),
-    personalExperience: z.array(personalExperienceSchema).default([]),
     skills: z.array(skillCategorySchema).default([]),
     projects: z.array(projectItemSchema).default([]),
     certifications: z.array(certificationsSchema).default([]),

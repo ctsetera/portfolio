@@ -1,6 +1,5 @@
 ---
 import DescriptionText from "../DescriptionText.astro";
-import { getActivitySections } from "../../lib/activitySections";
 import type { CVData } from "../../lib/cvSchema";
 import { getTranslations } from "../../lib/i18n";
 
@@ -11,10 +10,9 @@ interface Props {
 }
 
 const { data, locale = "en", format = "a4" } = Astro.props;
-const { profile, skills, projects, certifications } = data;
+const { profile, experience, skills, projects, certifications } = data;
 const t = getTranslations(locale);
 
-const activitySections = getActivitySections(data, t("present"));
 
 const contactItems: string[] = [];
 if (profile.email) contactItems.push(profile.email);
@@ -52,19 +50,17 @@ const socialItems = (profile.socials || []).map((s) => {
   </header>
 
   <!-- Activities -->
-  {activitySections.map((group) => group.entries.length > 0 && (
+  {experience.length > 0 && (
     <section class="ats-section">
-      <h2 class="ats-section-title">{t(group.key)}</h2>
+      <h2 class="ats-section-title">{t("experience")}</h2>
       <div class="ats-list">
-        {group.entries.map((item) => (
+        {experience.map((item) => (
           <article class="ats-item">
             <div class="ats-item-header">
-              <span class="ats-item-role"><strong>{item.heading}</strong></span>
-              {item.period && <span class="ats-item-date">{item.period}</span>}
+              <span class="ats-item-role"><strong>{item.title}</strong></span>
             </div>
-            {(item.subtitle || item.location) && <div class="ats-item-subheader">
-              <span class="ats-item-subtitle">{item.subtitle}</span>
-              {item.location && <span class="ats-item-location"> | {item.location}</span>}
+            {item.role && <div class="ats-item-subheader">
+              <span class="ats-item-subtitle">{item.role}</span>
             </div>}
 
             {item.description && <p class="ats-item-desc"><DescriptionText text={item.description} /></p>}
@@ -86,7 +82,7 @@ const socialItems = (profile.socials || []).map((s) => {
         ))}
       </div>
     </section>
-  ))}
+  )}
 
   <!-- Skills (Comma-separated lines for optimal ATS extraction) -->
   {skills && skills.length > 0 && (
@@ -280,14 +276,7 @@ const socialItems = (profile.socials || []).map((s) => {
     color: #4b5563;
   }
 
-  .ats-item-date {
-    font-size: 9pt;
-    font-weight: 600;
-    color: #374151;
-    white-space: nowrap;
-  }
-
-  .ats-item-subheader {
+.ats-item-subheader {
     font-size: 9.5pt;
     color: #374151;
   }

@@ -10,17 +10,16 @@ Astroのdotcvをベースに、classicレイアウト専用に整理した個人
 | 項目 | 内容 |
 | --- | --- |
 | `profile` | 名前、肩書き、自己紹介、任意の連絡先・画像・SNS |
-| `experience` | 職務経歴（会社・役割・期間・説明・成果・使用技術） |
-| `personalExperience` | 個人での技術経験（期間なし） |
+| `experience` | 個人での技術経験（期間なし） |
 | `projects` | 制作実績 |
 | `skills` | 技術スキル |
 | `certifications` | 資格 |
 
 一覧項目は省略または `[]` にすると見出しごと非表示になります。
-`personalExperience` は職務経歴の直下に表示されます。
+`experience` は自己紹介の下に「個人での技術経験」として表示されます。
 
 ```json
-"personalExperience": [
+"experience": [
   {
     "title": "電子工作・組み込み開発",
     "role": "企画・設計・実装",
@@ -31,7 +30,7 @@ Astroのdotcvをベースに、classicレイアウト専用に整理した個人
 ]
 ```
 
-個人での技術経験は `title` のみ必須です。既存の職務経歴の入力形式はそのまま使えます。
+個人での技術経験は `title` のみ必須です。期間・会社名の項目はありません。
 
 ## 表示の設定
 
@@ -61,7 +60,6 @@ PDFの任意設定：
 - `src/themes/classic/pdf.astro`：デザインPDF
 - `src/components/pdf/AtsResume.astro`：採用システム向けPDF
 - `src/components/ClassicFonts.astro`：Google Fontsの読み込み
-- `src/lib/activitySections.ts`：職務経歴・個人活動の共通表示データ
 - `src/lib/cvSchema.ts`：入力データの定義
 - `public/`：プロフィール画像・アイコン
 
@@ -99,7 +97,7 @@ npx wrangler deploy
 ```
 
 カスタムドメインは `portfolio.ctsetera.dev` です。ログイン先アカウントで `ctsetera.dev` を管理している必要があります。
-Git連携ビルドを利用する場合、現在Git管理対象外の `cv.json` をビルド環境に用意してください。
+`cv.json` はGit管理対象です。文章を更新した場合は、公開時にコードと一緒にコミット・プッシュしてください。
 
 ## 検索エンジンへの掲載防止
 
