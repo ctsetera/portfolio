@@ -1,0 +1,117 @@
+{
+  "profile": {
+    "name": "ちとせ",
+    "title": "フルスタックエンジニア",
+    "location": "神奈川",
+    "avatar": "/avatar.png",
+    "bio": "Androidネイティブアプリ開発を中心に、フロントエンド開発、バックエンド開発、Windowsアプリ開発、サーバー構築など、幅広い分野に取り組んできたフルスタックエンジニアです！<br><br>今後は自分の好きな分野に特化したくて、モバイルアプリエンジニアを目指して奮闘中。",
+    "socials": [
+      {
+        "plattform": "GitHub",
+        "url": "https://github.com/ctsetera",
+        "username": "ctsetera"
+      },
+      {
+        "plattform": "ブログ",
+        "url": "https://ctsetera.dev"
+      }
+    ]
+  },
+  "personalExperience": [
+    {
+      "title": "指定したセリフをVOICEVOXが一定間隔で読み上げるAndroidアプリ「イカランプタイマー」の開発",
+      "description": "Jetpack Composeを活用し、API通信・ローカルキャッシュへの保存・音声ファイルの再生などの機能を備えたインターバルタイマーを、ポートフォリオ用に開発しました。<br><br>個人的な話ではありますが、現在「スプラトゥーン」というゲームにハマっています。このゲームがもっと上手くなりたくて、「ずんだもん」や「四国めたん」をはじめとするVOICEVOXのキャラクターたちに、試合中につい忘れてしまうことを繰り返し喋ってほしいなあと思い、自分用に開発しました。<br><br>詳細は「制作実績」を参照してください。",
+      "technologies": [
+        "Android",
+        "Kotlin",
+        "Jetpack Compose",
+        "Room",
+        "Retrofit"
+      ]
+    },
+    {
+      "title": "AlmaLinux 9.1・Nextcloudで自分用のストレージサーバを構築する",
+      "description": "当時、業務で部署内の検証用物理Linuxサーバーの構築・運用などを担当していました。その経験を生かし、個人でも自分用のストレージサーバーを構築しました。<br><br>当時の記事は「制作実績」から読むことができます。",
+      "technologies": ["Linux"]
+    },
+    {
+      "title": "飛沫感染をシミュレートするAndroidアプリ「パンデミック」の開発",
+      "description": "高校生の頃に開発した、後年の新型コロナウイルス接触確認アプリ「COCOA」に似た仕組みを持つアプリです。<br><br>Bluetoothを利用して、アプリをインストールした端末間のおおよその距離を測定し、「飛沫感染が発生した」と判断した場合に、感染者の現在地などの情報をデータベースに保存する仕組みを実装しました。<br><br>収集した情報は、感染地点をGoogleマップ上にピンで表示する「感染マップ」として、Webから閲覧できるようにしました。<br><br>パソコン甲子園2015本戦出場。",
+      "technologies": ["Android", "Java", "PHP", "jQuery", "MySQL"]
+    }
+  ],
+  "skills": [
+    {
+      "category": "Languages & Core",
+      "skills": [
+        "Kotlin",
+        "Java",
+        "PHP",
+        "C#",
+        "TypeScript",
+        "JavaScript",
+        "SQL",
+        "HTML5",
+        "CSS"
+      ]
+    },
+    {
+      "category": "Frameworks & Libraries",
+      "skills": [
+        "Android SDK",
+        "Jetpack Compose",
+        "Laravel",
+        "WPF",
+        ".NET Framework",
+        "Java Servlet",
+        "jQuery"
+      ]
+    },
+    {
+      "category": "Tools & Infrastructure",
+      "skills": [
+        "Git",
+        "GitHub",
+        "GitLab",
+        "Android Studio",
+        "Visual Studio",
+        "Visual Studio Code",
+        "Linux",
+        "nginx",
+        "MySQL",
+        "SQLite",
+        "Cloudflare"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "title": "イカランプタイマー",
+      "url": "https://github.com/ctsetera/Ikaranpu",
+      "technologies": [
+        "Android",
+        "Kotlin",
+        "Jetpack Compose",
+        "Room",
+        "Retrofit"
+      ]
+    },
+    {
+      "title": "AlmaLinux 9.1・Nextcloudで自分用のストレージサーバを構築する",
+      "url": "https://note.com/ctsetera",
+      "technologies": ["Linux"]
+    }
+  ],
+  "certifications": [
+    {
+      "title": "Oracle Certified Java Programmer, Silver SE 8",
+      "issuer": "Oracle",
+      "date": "2020-03"
+    },
+    {
+      "title": "応用情報技術者",
+      "issuer": "IPA (Information-technology Promotion Agency, Japan)",
+      "date": "2019-06"
+    }
+  ]
+}

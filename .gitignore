@@ -43,8 +43,7 @@ TODO.md
 .system_generated/
 AGENTS.md
 
-# Optional: Comment if you want to keep your personal CV data private in public git repos
-cv.json
+# Unused alternative CV formats (cv.json is tracked for deployment)
 cv.yaml
 cv.xml
 # Cloudflare local state
