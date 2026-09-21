@@ -13,7 +13,7 @@
       },
       {
         "plattform": "ブログ",
-        "url": "https://ctsetera.dev"
+        "url": "https://blog.ctsetera.dev"
       }
     ]
   },
@@ -98,7 +98,7 @@
     },
     {
       "title": "AlmaLinux 9.1・Nextcloudで自分用のストレージサーバを構築する",
-      "url": "https://note.com/ctsetera",
+      "url": "https://blog.ctsetera.dev/categories/%E8%87%AA%E5%AE%85%E9%AF%96%E6%97%A7/",
       "technologies": ["Linux"]
     }
   ],
