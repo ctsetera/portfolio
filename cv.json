@@ -19,6 +19,11 @@
   },
   "experience": [
     {
+      "title": "Oracle Cloudによるゲームサーバの構築・運用",
+      "description": "Oracle CloudでLinuxサーバを構築し、「Terraria」というゲームのサーバとして運用しています。<br><br>詳細は「制作実績」を参照してください。",
+      "technologies": ["Linux", "Oracle Cloud"]
+    },
+    {
       "title": "指定したセリフをVOICEVOXが一定間隔で読み上げるAndroidアプリ「イカランプタイマー」の開発",
       "description": "Jetpack Composeを活用し、API通信・ローカルキャッシュへの保存・音声ファイルの再生などの機能を備えたインターバルタイマーを、ポートフォリオ用に開発しました。<br><br>個人的な話ではありますが、現在「スプラトゥーン」というゲームにハマっています。このゲームがもっと上手くなりたくて、「ずんだもん」や「四国めたん」をはじめとするVOICEVOXのキャラクターたちに、試合中につい忘れてしまうことを繰り返し喋ってほしいなあと思い、自分用に開発しました。<br><br>詳細は「制作実績」を参照してください。",
       "technologies": [
@@ -85,6 +90,11 @@
     }
   ],
   "projects": [
+    {
+      "title": "Oracle Cloudによるゲームサーバの構築・運用",
+      "url": "https://blog.ctsetera.dev/categories/%E3%82%B2%E3%83%BC%E3%83%A0%E9%AF%96/",
+      "technologies": ["Linux", "Oracle Cloud"]
+    },
     {
       "title": "イカランプタイマー",
       "url": "https://github.com/ctsetera/Ikaranpu",
